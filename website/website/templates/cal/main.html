@@ -1,0 +1,45 @@
+{% extends "cal/base.html" %}
+{% load url from future %}
+<!-- ... -->
+{% block title %} Cal {% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<p>Hi <b>{{user.username}}!</b></p>
+<a href="/cal/logout/">Logout</a><br />
+{% else %}
+<a href="/cal/register/">Register Here</a><br />
+<a href="/callogin/">Login</a><br />
+{% endif %}
+<div style = "text-align:center">
+<a href="{% url "cal.views.main" year|add:'-3' %}">&lt;&lt; Prev</a>
+<a href="{% url "cal.views.main" year|add:'3' %}">Next &gt;&gt;</a>
+</div>
+<br />
+
+
+<table align = "center">
+
+    <tr>
+    {% for year, months in years %}
+    <td>
+        <div class="clear"></div>
+        <h4>{{ year }}</h4>
+        {% for month in months %}
+            <div class=
+            {% if month.current %}"current"{% endif %}
+            {% if not month.current %}"month"{% endif %} >
+                {% if month.entry %}<b>{% endif %}
+                <a href="{% url "cal.views.month" year month.n %}">{{ month.name }}</a>
+                {% if month.entry %}</b>{% endif %}
+            </div>
+
+        {% endfor %}
+        <br />
+    </td>
+    {% endfor %}
+    </tr>
+ 
+</table>
+
+{% endblock %}

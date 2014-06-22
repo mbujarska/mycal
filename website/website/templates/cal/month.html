@@ -1,0 +1,68 @@
+{% extends "cal/base.html" %}
+{% load url from future %}
+{% block title %} Cal {% endblock %}
+{% block content %}
+<div align = "center">
+<a href="{% url "cal.views.main" %}">&lt;&lt; Prev</a>
+</div>
+<h4 align = "center">{{ mname }} {{ year }}</h4>
+<div class="month">
+    <table align = "center">
+
+    <tr>
+        <td class="empty">Mon</td>
+        <td class="empty">Tue</td>
+        <td class="empty">Wed</td>
+        <td class="empty">Thu</td>
+        <td class="empty">Fri</td>
+        <td class="empty">Sat</td>
+        <td class="empty">Sun</td>
+    </tr>
+
+    {% for week in month_days %}
+        <tr>
+        {% for day, entries, current in week %}
+
+            
+            <td class= {% if day == 0 %}"empty"{% endif %}
+            {% if day != 0 and not current %}"day"{% endif %}
+            {% if day != 0 and current %}"current"{% endif %}
+            
+
+            <!-- Day number and entry snippets -->
+            {% if day != 0 %}
+                {{ day }}
+            {% endif %}
+           </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+
+
+
+{% for week in month_days %}
+        <tr>
+        {% for day, entries, current in week %}
+          
+            <td class= {% if day == 0 %}"empty"{% endif %}
+            {% if day != 0 and not current %}"day"{% endif %}
+            {% if day != 0 and current %}"current"{% endif %}
+            <!-- Day number and entry snippets -->
+            {% if day != 0 %}
+                 {% for entry in entries %}
+                    <tr>
+                    <p style="font-size:10px">
+                    <b>{{ entry.creator }}</b>: {{ entry.short|safe }} {{day}} {{mname}}
+                    </p>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+           </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    <div class="clear"></div>
+</div>
+{% endblock %}
+
